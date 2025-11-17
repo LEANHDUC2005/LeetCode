@@ -1,6 +1,4 @@
 
-
-
 typedef struct {
     int *num;
     int *prefix;
