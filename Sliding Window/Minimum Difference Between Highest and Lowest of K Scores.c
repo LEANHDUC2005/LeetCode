@@ -57,3 +57,50 @@ int minimumDifference(int* nums, int numsSize, int k) {
     }
     return min;
 }
+// Counting Sort
+void countingSort(int* nums, int numsSize)
+{
+    int max = 0;
+    for(int i=0; i<numsSize; i++)
+    {
+        if ( nums[i] > max ) max = nums[i];
+    }
+    int count[max + 1];
+    memset(count, 0, sizeof(count));
+    int output[numsSize];
+
+    for(int i=0; i<numsSize; i++)
+    {
+        count[nums[i]]++;
+    }
+    for(int i=1; i<max+1; i++)
+    {
+        count[i] += count[i - 1];
+    }
+    for(int i=numsSize-1; i>=0; i--)
+    {
+        output[count[nums[i]] - 1] = nums[i];
+        count[nums[i]]--;
+    }
+    for(int i=0; i<numsSize; i++)
+    {
+        nums[i] = output[i];
+    }
+}
+int minimumDifference(int* nums, int numsSize, int k) {
+    countingSort(nums, numsSize);
+    int *left = nums;
+    int *right = nums + k - 1;
+    int diff = *right - *left;
+    int min = diff;
+
+    while( left < right && right < nums + numsSize )
+    {
+        diff = *right - *left;
+        if ( min > diff )
+        min = diff;
+        right++;
+        left++;
+    }
+    return min;
+}
