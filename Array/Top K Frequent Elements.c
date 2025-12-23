@@ -1,6 +1,7 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
+// Hashing counting + Counting Sort
 int* topKFrequent(int* nums, int numsSize, int k, int* returnSize) {
     int offset = 10000;
     int hashSize = 10000 + offset + 2;
