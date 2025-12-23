@@ -34,3 +34,30 @@ int* productExceptSelf(int* nums, int numsSize, int* returnSize) {
     *returnSize = numsSize;
     return nums;
 }
+// Example
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* productExceptSelf(int* nums, int numsSize, int* returnSize) {
+    // 1. Initialize result array
+    *returnSize = numsSize;
+    int* result = (int*)malloc(numsSize * sizeof(int));
+    
+    // 2. First Pass: Left (Prefix) Products
+    // result[i] will store the product of all elements to the left of index i
+    int leftProduct = 1;
+    for (int i = 0; i < numsSize; i++) {
+        result[i] = leftProduct;
+        leftProduct *= nums[i];
+    }
+    
+    // 3. Second Pass: Right (Suffix) Products
+    // Multiply the existing result[i] by the product of all elements to the right
+    int rightProduct = 1;
+    for (int i = numsSize - 1; i >= 0; i--) {
+        result[i] *= rightProduct;
+        rightProduct *= nums[i];
+    }
+    
+    return result;
+}
