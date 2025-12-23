@@ -39,3 +39,43 @@ int* topKFrequent(int* nums, int numsSize, int k, int* returnSize) {
     free(output);
     return returnArr;
 }
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+// Struct + Remove Duplicate + Quick Sort
+struct P{
+    int num;
+    int freq;
+};
+
+int cmp(const void *a, const void *b){
+    return ((struct P*)b)->freq - ((struct P*)a)->freq;
+}
+int* topKFrequent(int* nums, int numsSize, int k, int* returnSize) {
+    struct P count[20001] = {0};
+    int unique = 0;
+    for(int i=0; i < numsSize; i++){
+        int idx = nums[i] + 10000;
+        if ( count[idx].freq == 0 ){
+            count[idx].num = nums[i];
+            count[idx].freq++;
+        }
+        count[idx].freq++;
+    }
+    
+    struct P *uniqueArr = (struct P*)malloc(numsSize * sizeof(struct P));
+    if ( !uniqueArr ) return NULL;
+    for(int i=0; i < 20001; i++){
+        if ( count[i].freq > 0 ){
+            uniqueArr[unique++] = count[i];
+        }
+    }
+    qsort(uniqueArr, unique, sizeof(struct P), cmp);
+    int *returnArr = (int*)malloc(k * sizeof(int));
+    for(int i=0; i < k; i++){
+        returnArr[i] = uniqueArr[i].num;
+    }
+    *returnSize = k;
+    free(uniqueArr);
+    return returnArr;
+}
